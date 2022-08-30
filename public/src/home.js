@@ -58,27 +58,12 @@ function getMostCommonGenres(books) {
 
 function getMostPopularBooks(books) {
 
-  // Initialize 2 empty variables: (1) an object for count of genre occurrences, and (2) the final result array which will be returned at the end of the method
-
-  let countOfBorrows = {};
-  let result = [];
-
-  // Iterate through each book in books. Set the book title as key, and count of book borrows as the value for each entry in countOfBorrows object. 
-
-  books.forEach((book) => { countOfBorrows[book.title] = book.borrows.length});
-
-  // Populate the result array with an object for each book, where name is sent to the countOfBorrows element key and the count is set to the countOfBorrows element value. 
-
-  for (const [key, value] of Object.entries(countOfBorrows)) {
-    result.push({
-      'name' : key,
-      'count' : value
-    }); 
-  }
-
-  // Sort the results in descending order by count, and truncate to return only the first 5 entries 
-
-  return result.sort((bookA, bookB) => bookB.count - bookA.count).slice(0,5);
+  // Here we map the books array to a new object with name = book's title, and count = the length of the book's borrow array. We then sort in descending order
+  // by count, and slice the top 5 elements of the result which is returned. 
+  
+  return books.map((book) => {
+    return {"name": book.title, "count": book.borrows.length}
+  }).sort((bookA, bookB) => bookB.count - bookA.count).slice(0,5);
 }
 
 function getMostPopularAuthors(books, authors) {
