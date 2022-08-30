@@ -12,6 +12,13 @@ function getTotalAccountsCount(accounts) {
 
 function getBooksBorrowedCount(books) {
 
+  // Reduce to an object with name: and book.borrows[0].returned
+
+  books.reduce((result, book) => {
+    result[book.title] = book.borrows[0].returned
+    return result;
+  })
+
   let borrowedCount = 0; 
 
   for (let i = 0; i < books.length; i++ ) {
@@ -93,6 +100,10 @@ function getMostPopularAuthors(books, authors) {
   // Sort the results in descending order by count, and truncate to return only the first 5 entries 
   return result.sort((authorA, authorB) => authorB.count - authorA.count).slice(0, 5);
  }
+
+ function getBorrowedStatus(book) {
+  return !book.borrows[0].returned; 
+}
 
 module.exports = {
   getTotalBooksCount,

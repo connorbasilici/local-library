@@ -18,23 +18,17 @@ function getTotalNumberOfBorrows(account, books) {
 
   let totalNumberOfBorrows = 0; 
 
-  // Create a loop for borrows nested in a loop for books. So, take the first book, and the first borrow in books[0].borrow. Check if that borrow has been returned. 
-  // If not, add 1 to the result value, if so, add nothing and move on to the next borrow. Iterate through the rest of the borrows, then move on to the next book. 
+  // Loop through each book in book, and use reduce to accumulate the total number of borrows each time a borrow in the book has a borrow.id which is matching the input account.id
 
-  for (let i = 0; i < books.length; i++ ) {
-    for (let j = 0; j < books[i].borrows.length; j++) {
-      account.id === books[i].borrows[j].id ? totalNumberOfBorrows +=1 : totalNumberOfBorrows +=0; 
-      }
-    }
+  books.forEach(book =>
+    { let result = book.borrows.reduce((total,borrow) =>
+      { if(account.id === borrow.id) {total ++;} return total },0); 
+      totalNumberOfBorrows += result; })
 
   return totalNumberOfBorrows;
 }
 
 function getBooksPossessedByAccount(account, books, authors) {
-
-  // Give a name to our result, and initialize it as an empty array 
-  
-  let booksPossessedByAccount = [];
 
   // Embed offer information in each book in books 
 
@@ -43,15 +37,12 @@ function getBooksPossessedByAccount(account, books, authors) {
     book['author'] = author;
   })
 
-  // Go through each book in books, and push any book which is not returned and matching the input account id to booksPossessedByAccount array
 
-  books.forEach((book) => {
-    if (book.borrows.find((borrow) => borrow.id === account.id && !borrow.returned)) {
-      booksPossessedByAccount.push(book);
-    }
-  })
+  // Return books filtered for books which meet two conditions checked by some:
+  // (1) that there exists a borrow where borrow.id is matching input account.id, and (2) that the borrow matching the account has not been returned
 
-  return booksPossessedByAccount;
+  return books.filter((book) => { return book.borrows.some((borrow) => borrow.id === account.id && !borrow.returned); });
+
 }
 
 module.exports = {
