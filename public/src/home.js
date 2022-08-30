@@ -101,10 +101,6 @@ function getMostPopularAuthors(books, authors) {
   return result.sort((authorA, authorB) => authorB.count - authorA.count).slice(0, 5);
  }
 
- function getBorrowedStatus(book) {
-  return !book.borrows[0].returned; 
-}
-
 module.exports = {
   getTotalBooksCount,
   getTotalAccountsCount,

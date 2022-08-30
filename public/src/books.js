@@ -16,10 +16,8 @@ function partitionBooksByBorrowedStatus(books) {
 
   let borrowedStatusFalse = []; 
   let borrowedStatusTrue = [];
-
-  // I noticed in the sample data that any borrow which has not been returned is in the 0 element of the borrows array. Here we iterate through each book in the books array. 
-  // Use the helper function to check only the first element of a book's borrows (borrows[0]), and see whether returned is true or false. 
-  // If true, push to borrowedStatusFalse - if false, push to borrowedStatusTrue. 
+ 
+  // Use the helper function to check if the book is currently checked out. If true, push to borrowedStatusFalse - if false, push to borrowedStatusTrue. 
 
   books.forEach((book) => {
     getBorrowedStatus(book) ? borrowedStatusTrue.push(book) : borrowedStatusFalse.push(book);
@@ -51,6 +49,9 @@ function getBorrowersForBook(book, accounts) {
   return borrowers.slice(0,10); 
 
 }
+
+// From the project guidlines, we know that the first borrow will have status false if the book is currently checked out. This helper function will check the first element of a books borrows array, 
+// and return the opposite of its truth value (i.e., if book is checked out getBorrowedStatus(book) >> true). 
 
 function getBorrowedStatus(book) {
   return !book.borrows[0].returned; 
